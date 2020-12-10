@@ -56,6 +56,7 @@ using namespace epee;
 #include "core_rpc_server_error_codes.h"
 #include "p2p/net_node.h"
 #include "version.h"
+#include "rpc/privacy_notifications.h"
 
 #undef MONERO_DEFAULT_LOG_CATEGORY
 #define MONERO_DEFAULT_LOG_CATEGORY "daemon.rpc"
@@ -818,6 +819,7 @@ namespace cryptonote
     }
     res.status = CORE_RPC_STATUS_OK;
     LOG_PRINT_L2("COMMAND_RPC_GET_TX_GLOBAL_OUTPUTS_INDEXES: [" << res.o_indexes.size() << "]");
+    GET_O_INDEXES_BIN();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -1058,6 +1060,7 @@ namespace cryptonote
 
     LOG_PRINT_L2(res.txs.size() << " transactions found, " << res.missed_tx.size() << " not found");
     res.status = CORE_RPC_STATUS_OK;
+    GET_TRANSACTIONS();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -1136,6 +1139,7 @@ namespace cryptonote
     }
 
     res.status = CORE_RPC_STATUS_OK;
+    IS_KEY_IMAGE_SPENT();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -1237,6 +1241,7 @@ namespace cryptonote
     m_core.get_protocol()->relay_transactions(r, boost::uuids::nil_uuid(), epee::net_utils::zone::invalid, relay_method::local);
     //TODO: make sure that tx has reached other nodes here, probably wait to receive reflections from other nodes
     res.status = CORE_RPC_STATUS_OK;
+    SEND_RAW_TRANSACTION();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -2166,6 +2171,7 @@ namespace cryptonote
     }
 
     res.status = CORE_RPC_STATUS_OK;
+    GET_BLOCK_HEADER_BY_HASH();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -2226,6 +2232,7 @@ namespace cryptonote
       }
     }
     res.status = CORE_RPC_STATUS_OK;
+    GET_BLOCK_HEADERS_RANGE();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -2261,6 +2268,7 @@ namespace cryptonote
       return false;
     }
     res.status = CORE_RPC_STATUS_OK;
+    GET_BLOCK_HEADER_BY_HEIGHT();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -2578,6 +2586,7 @@ namespace cryptonote
     }
 
     res.status = CORE_RPC_STATUS_OK;
+    GET_OUTPUT_HISTOGRAM();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
@@ -2893,6 +2902,7 @@ namespace cryptonote
     }
 
     res.status = CORE_RPC_STATUS_OK;
+    RELAY_TX();
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
